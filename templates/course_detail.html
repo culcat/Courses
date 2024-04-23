@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <h1>{{ course.name }}</h1>
+        <p>{{ course.description }}</p>
+        <h2>Уроки</h2>
+        <ul class="list-group">
+            {% for lesson in lessons %}
+                <li class="list-group-item">
+                    <a href="{% url 'lesson_detail' lesson.id %}">{{ lesson.title }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
