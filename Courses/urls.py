@@ -1,11 +1,14 @@
 from django.urls import path
 
 from django.contrib import admin
-from CoursesApp.views import home, course_list, course_detail, my_courses, lesson_detail, submit_answer, rate_answers, student_ranking
+from CoursesApp.views import *
 
 urlpatterns = [
     path('', home, name='home'),
-    path('/admin', admin.site.urls),
+    path('admin/', admin.site.urls),
+    path('login/', login_user, name='login'),
+    path('logout/', logout_user, name='logout'),
+    path('register/',register_user,name='register'),
     path('courses/', course_list, name='course_list'),
     path('course/<int:course_id>/', course_detail, name='course_detail'),
     path('my_courses/', my_courses, name='my_courses'),

@@ -24,24 +24,24 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'course_list' %}">Список курсов</a>
                 </li>
-{#                {% if user.is_authenticated %}#}
-{#                    <li class="nav-item">#}
-{#                        <a class="nav-link" href="{% url 'my_courses' %}">Мои курсы</a>#}
-{#                    </li>#}
-{#                    <li class="nav-item">#}
-{#                        <a class="nav-link" href="{% url 'rate_answers' %}">Проверка ответов</a>#}
-{#                    </li>#}
-{#                    <li class="nav-item">#}
-{#                        <a class="nav-link" href="{% url 'logout' %}">Выход</a>#}
-{#                    </li>#}
-{#                {% else %}#}
-{#                    <li class="nav-item">#}
-{#                        <a class="nav-link" href="{% url 'login' %}">Вход</a>#}
-{#                    </li>#}
-{#                    <li class="nav-item">#}
-{#                        <a class="nav-link" href="{% url 'register' %}">Регистрация</a>#}
-{#                    </li>#}
-{#                {% endif %}#}
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'my_courses' %}">Мои курсы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'rate_answers' %}">Проверка ответов</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">Выход</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Вход</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Регистрация</a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
