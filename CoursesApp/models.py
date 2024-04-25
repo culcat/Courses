@@ -4,11 +4,10 @@ from django.utils.translation import gettext as _
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = [
         ('admin', 'Админ'),
-        ('organization', 'Образовательная организация'),
         ('teacher', 'Преподаватель'),
         ('student', 'Ученик'),
     ]
-
+    organization = models.ForeignKey('EducationalOrganization', on_delete=models.SET_NULL, null=True, blank=True, related_name='members')
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES)
     groups = models.ManyToManyField(Group, verbose_name=_('groups'), blank=True, related_name='custom_users')
     user_permissions = models.ManyToManyField(
@@ -29,6 +28,8 @@ class EducationalOrganization(models.Model):
     address = models.CharField(max_length=200)
     phone = models.CharField(max_length=20)
     email = models.EmailField()
+    def __str__(self):
+        return self.name
 
 
 class Course(models.Model):
@@ -53,6 +54,6 @@ class StudentAnswer(models.Model):
 
 
 class StudentRating(models.Model):
-    student = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='rating')
+    student = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='rating',null=True, blank=True)
     score = models.IntegerField()
     position = models.PositiveIntegerField()

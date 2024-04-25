@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login_user, name='login'),
     path('logout/', logout_user, name='logout'),
-    path('register/',register_user,name='register'),
+    path('register/',register,name='register'),
     path('courses/', course_list, name='course_list'),
     path('course/<int:course_id>/', course_detail, name='course_detail'),
     path('my_courses/', my_courses, name='my_courses'),
