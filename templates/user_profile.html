@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mt-4 mb-4">Личный кабинет</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text">Привет, {{ user.username }}!</p>
+
+            <ul class="list-group mb-3">
+                <li class="list-group-item">Имя: {{ user.first_name }} {{ user.last_name }}</li>
+                <li class="list-group-item">Email: {{ user.email }}</li>
+                {% if user.user_type == 'student' %}
+                    <li class="list-group-item">Образовательная организация: {{ user.organization }}</li>
+                    <li class="list-group-item">Тип пользователя: Ученик</li>
+                    <li class="list-group-item">Мои курсы:</li>
+                    <ul class="list-group">
+                        {% for course in user.courses_taught.all %}
+                            <li class="list-group-item">
+                                <a href="{% url 'course_detail' course.id %}">{{ course.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% elif user.user_type == 'teacher' %}
+                    <li class="list-group-item">Образовательная организация: {{ user.organization }}</li>
+                    <li class="list-group-item">Тип пользователя: Преподаватель</li>
+                    <li class="list-group-item">Мои курсы:</li>
+                    <ul class="list-group">
+                        {% for course in user.courses_taught.all %}
+                            <li class="list-group-item">
+                                <a href="{% url 'course_detail' course.id %}">{{ course.name }}</a>
+                                (
+                                <a href="{% url 'course_edit' course.id %}">редактировать</a>
+                                )
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <li class="list-group-item">Тип пользователя: Админ</li>
+                {% endif %}
+            </ul>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,16 +1,47 @@
 {% extends 'base.html' %}
+
 {% block content %}
-    <div class="container">
-        <h1>{{ lesson.title }}</h1>
-        <p>{{ lesson.material }}</p>
- {% if user.is_authenticated %}
-        {% if user.user_type == 'student' %}
-            <h2>Submit Your Answer:</h2>
-            <form method="post" enctype="multipart/form-data" action="{% url 'submit_answer' lesson_id=lesson.id %}">
-                {% csrf_token %}
-                <input type="file" name="answer" required>
-                <button type="submit">Submit</button>
-            </form>
-        {% endif %}
-    {% endif %}    </div>
+<div class="container">
+    <h1>{{ lesson.course.name }} - {{ lesson.title }}</h1>
+
+    {% if lesson.video %}
+    <div class="embed-responsive embed-responsive-16by9">
+        <video class="embed-responsive-item" controls>
+            <source src="{{ lesson.video.url }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    {% endif %}
+
+    <p>{{ lesson.material }}</p>
+
+    {% if request.user.is_authenticated %}
+    {% if not student_answer %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="answer_file">Ваш ответ:</label>
+            <input type="file" class="form-control-file" id="answer_file" name="answer_file" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+    {% else %}
+    {#    <div class="mt-3">#}
+    {#        <p>Ваш ответ:</p>#}
+    {#        <a href="{{ student_answer.answer_file.url }}" class="btn btn-secondary">{{ student_answer.answer_file.name }}</a>#}
+    {#        <!-- Uncomment below section if you want to enable scoring by teachers -->#}
+    {#        <!-- {% if request.user.user_type == 'teacher' %} -->#}
+    {#        <!-- <form method="post"> -->#}
+    {#        <!--     {% csrf_token %} -->#}
+    {#        <!--     <div class="form-group mt-3"> -->#}
+    {#        <!--         <label for="score">Оценка:</label> -->#}
+    {#        <!--         <input type="number" class="form-control" id="score" name="score" min="0" max="{{ lesson.max_score }}" value="{{ student_answer.score or 0 }}"> -->#}
+    {#        <!--     </div> -->#}
+    {#        <!--     <button type="submit" class="btn btn-primary">Выставить оценку</button> -->#}
+    {#        <!-- </form> -->#}
+    {#        <!-- {% endif %} -->#}
+    {#    </div>#}
+    {% endif %}
+    {% endif %}
+</div>
 {% endblock %}

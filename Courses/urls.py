@@ -1,6 +1,9 @@
+from django.conf.urls.static import static
 from django.urls import path
 
 from django.contrib import admin
+
+from Courses import settings
 from CoursesApp.views import *
 
 urlpatterns = [
@@ -16,4 +19,7 @@ urlpatterns = [
     path('submit_answer/<int:lesson_id>/', submit_answer, name='submit_answer'),
     path('rate_answers/', rate_answers, name='rate_answers'),
     path('student_ranking/', student_ranking, name='student_ranking'),
+    path('profile/', user_profile, name='profile'),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

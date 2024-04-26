@@ -95,3 +95,14 @@ def rate_answers(request, answer_id):
 def student_ranking(request):
     top_students = StudentRating.objects.order_by('-score')[:50]
     return render(request, 'student_ranking.html', {'top_students': top_students})
+def user_profile(request):
+    """
+    Личный кабинет пользователя.
+    """
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    context = {
+        'user': request.user,
+    }
+    return render(request, 'user_profile.html', context)
