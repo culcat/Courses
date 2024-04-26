@@ -16,3 +16,8 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = UserChangeForm.Meta.fields
+
+
+class RatingForm(forms.Form):
+    score = forms.IntegerField(min_value=0, max_value=10)
+    position = forms.IntegerField(min_value=1)

@@ -1,24 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="container">
-        <h1>Проверка ответов</h1>
-        <form method="post">
-            {% csrf_token %}
-            {% for answer in student_answers %}
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Ответ ученика {{ answer.student.username }}</h5>
-                        <p class="card-text">Урок: {{ answer.lesson.title }}</p>
-                        <input type="hidden" name="lesson_id" value="{{ answer.lesson.id }}">
-                        <input type="hidden" name="answer_id" value="{{ answer.id }}">
-                        <div class="form-group">
-                            <label for="score">Баллы:</label>
-                            <input type="number" class="form-control" id="score" name="score" min="0" max="10" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Выставить баллы</button>
-                    </div>
-                </div>
-            {% endfor %}
-        </form>
+   <h2>Rate Student</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Rate</button>
+    </form>
     </div>
 {% endblock %}

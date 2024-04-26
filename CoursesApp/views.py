@@ -1,9 +1,11 @@
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Course, Lesson, StudentAnswer, StudentRating
 from .forms import *
+from django.db import models
 def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
@@ -73,38 +75,22 @@ def submit_answer(request, lesson_id):
     else:
         return redirect('home')
 
-@login_required
-def rate_answers(request):
-    if request.user.user_type == 'teacher':
-        if request.method == 'POST':
-            lesson_id = request.POST.get('lesson_id')
-            lesson = Lesson.objects.get(id=lesson_id)
-            if lesson.course.teacher != request.user:
-                return redirect('home')
-
-            # Получаем данные из POST-запроса
-            answer_id = request.POST.get('answer_id')
-            score = int(request.POST.get('score'))
-
-            # Находим ответ студента и выставляем баллы
-            student_answer = StudentAnswer.objects.get(id=answer_id)
-            student_answer.score = score
-            student_answer.save()
-
-            # Рассчитываем общий балл ученика и обновляем его рейтинг
-            student = student_answer.student
-            total_score = StudentAnswer.objects.filter(student=student).aggregate(total_score=models.Sum('score'))['total_score']
-            student_rating, created = StudentRating.objects.get_or_create(student=student)
-            student_rating.score = total_score
-            student_rating.save()
-            pass
-        else:
-            user = request.user
-            courses_taught = Course.objects.filter(teacher=user)
-            student_answers = StudentAnswer.objects.filter(lesson__course__in=courses_taught)
-            return render(request, 'rate_answers.html', {'student_answers': student_answers})
+def rate_answers(request, answer_id):
+    answer = get_object_or_404(StudentAnswer, pk=answer_id)
+    if request.method == 'POST':
+        form = RatingForm(request.POST)
+        if form.is_valid():
+            score = form.cleaned_data['score']
+            position = form.cleaned_data['position']
+            # Проверка, существует ли уже запись рейтинга для студента
+            rating, created = StudentRating.objects.get_or_create(student=answer.student)
+            rating.score = score
+            rating.position = position
+            rating.save()
+            return HttpResponseRedirect('/success/')  # Redirect to success page
     else:
-        return redirect('home')
+        form = RatingForm()
+    return render(request, 'rate_student.html', {'form': form, 'answer': answer})
 
 def student_ranking(request):
     top_students = StudentRating.objects.order_by('-score')[:50]

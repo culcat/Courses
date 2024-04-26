@@ -3,6 +3,14 @@
     <div class="container">
         <h1>{{ lesson.title }}</h1>
         <p>{{ lesson.material }}</p>
-        <!-- Добавьте здесь видеоматериал и другие элементы интерфейса, если необходимо -->
-    </div>
+ {% if user.is_authenticated %}
+        {% if user.user_type == 'student' %}
+            <h2>Submit Your Answer:</h2>
+            <form method="post" enctype="multipart/form-data" action="{% url 'submit_answer' lesson_id=lesson.id %}">
+                {% csrf_token %}
+                <input type="file" name="answer" required>
+                <button type="submit">Submit</button>
+            </form>
+        {% endif %}
+    {% endif %}    </div>
 {% endblock %}
