@@ -6,7 +6,7 @@ class CustomUserCreationForm(UserCreationForm):
     organization = forms.ModelChoiceField(queryset=EducationalOrganization.objects.all(), required=False)
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'password1', 'password2', 'user_type')
+        fields = ('username', 'email', 'password1', 'password2', 'user_type', 'organization')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

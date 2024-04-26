@@ -54,10 +54,24 @@ def course_detail(request, course_id):
 def my_courses(request):
     user = request.user
     if user.user_type == 'student':
-        courses = Course.objects.filter(student=user)
-        return render(request, 'my_courses.html', {'courses': courses})
+        # Check if the student is already enrolled in a course
+        enrolled_courses = Course.objects.filter(students=user)
+        if enrolled_courses.exists():
+            # If the student is already enrolled, display their enrolled courses
+            return render(request, 'my_courses.html', {'courses': enrolled_courses})
+        else:
+            if request.method == 'POST':
+                course_id = request.POST.get('course_id')
+                course = get_object_or_404(Course, pk=course_id)
+                course.students.add(user)  # Enroll the student in the course
+                return redirect('my_courses')
+            else:
+                # If the student is not enrolled, provide the option to choose a course
+                available_courses = Course.objects.exclude(students=user)
+                return render(request, 'choose_course.html', {'courses': available_courses})
     else:
         return redirect('home')
+
 
 @login_required
 def lesson_detail(request, lesson_id):
