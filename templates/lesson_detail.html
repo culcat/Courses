@@ -17,7 +17,7 @@
 
     {% if request.user.is_authenticated %}
     {% if not student_answer %}
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" action="{% url 'submit_answer' lesson_id=lesson.id %}" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
             <label for="answer_file">Ваш ответ:</label>
@@ -26,21 +26,7 @@
         <button type="submit" class="btn btn-primary">Отправить</button>
     </form>
     {% else %}
-    {#    <div class="mt-3">#}
-    {#        <p>Ваш ответ:</p>#}
-    {#        <a href="{{ student_answer.answer_file.url }}" class="btn btn-secondary">{{ student_answer.answer_file.name }}</a>#}
-    {#        <!-- Uncomment below section if you want to enable scoring by teachers -->#}
-    {#        <!-- {% if request.user.user_type == 'teacher' %} -->#}
-    {#        <!-- <form method="post"> -->#}
-    {#        <!--     {% csrf_token %} -->#}
-    {#        <!--     <div class="form-group mt-3"> -->#}
-    {#        <!--         <label for="score">Оценка:</label> -->#}
-    {#        <!--         <input type="number" class="form-control" id="score" name="score" min="0" max="{{ lesson.max_score }}" value="{{ student_answer.score or 0 }}"> -->#}
-    {#        <!--     </div> -->#}
-    {#        <!--     <button type="submit" class="btn btn-primary">Выставить оценку</button> -->#}
-    {#        <!-- </form> -->#}
-    {#        <!-- {% endif %} -->#}
-    {#    </div>#}
+
     {% endif %}
     {% endif %}
 </div>

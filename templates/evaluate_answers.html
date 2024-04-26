@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<body>
+    <div class="container">
+        <h1>Оценить ответы студентов</h1>
+
+        {% if lesson_id %}
+            <h2>Урок: {{ lesson_id }}</h2>
+        {% endif %}
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Студент</th>
+                    <th scope="col">Файл ответа</th>
+                    <th scope="col">Оценка</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for answer in student_answers %}
+                    <tr>
+                        <td>{{ answer.student.username }}</td>
+                        <td>
+                            <a href="{{ answer.answer_file.url }}" class="btn btn-primary btn-sm">Скачать ответ</a>
+                        </td>
+                        <td>
+                            {% if not student_answers.first.score %}
+                                <form method="post" action="{% url 'evaluate_answer' answer.id %}">
+                                    {% csrf_token %}
+                                    <div class="input-group input-group-sm mb-3">
+                                        <input type="number" name="score" min="0" max="{{ course.max_score }}" class="form-control" aria-label="Оценка" required>
+                                        <button type="submit" class="btn btn-outline-success btn-sm">Отправить оценку</button>
+                                    </div>
+                                </form>
+                            {% else %}
+                                {{ answer.score }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if not student_answers %}
+            <p>Для данного курса или урока не найдено ответов студентов.</p>
+        {% endif %}
+    </div>
+</body>
+
+{% endblock %}

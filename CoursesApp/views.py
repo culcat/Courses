@@ -78,16 +78,16 @@ def lesson_detail(request, lesson_id):
     lesson = Lesson.objects.get(id=lesson_id)
     return render(request, 'lesson_detail.html', {'lesson': lesson})
 
-@login_required
 def submit_answer(request, lesson_id):
     if request.method == 'POST':
         user = request.user
         lesson = Lesson.objects.get(id=lesson_id)
-        answer_file = request.FILES['answer']
+        answer_file = request.FILES['answer_file']  # use 'answer_file' key
         StudentAnswer.objects.create(student=user, lesson=lesson, answer_file=answer_file)
         return redirect('lesson_detail', lesson_id=lesson_id)
     else:
         return redirect('home')
+
 
 def rate_answers(request, answer_id):
     answer = get_object_or_404(StudentAnswer, pk=answer_id)
@@ -120,3 +120,32 @@ def user_profile(request):
         'user': request.user,
     }
     return render(request, 'user_profile.html', context)
+
+def evaluate_student_answers(request, lesson_id):
+
+
+
+    student_answers = StudentAnswer.objects.filter(lesson = lesson_id)
+
+
+    context = {
+        'student_answers': student_answers,
+        'lesson_id': lesson_id,  # Pass lesson ID for potential filtering in the template
+    }
+
+    return render(request, 'evaluate_answers.html', context)
+
+
+def evaluate_answer(request, answer_id):
+
+
+    answer = get_object_or_404(StudentAnswer, pk=answer_id)
+
+    if request.method == 'POST':
+        score = request.POST.get('score')
+        # Implement logic to validate and save the score to the answer object
+        # (e.g., answer.score = score; answer.save())
+
+        return redirect('evaluate_course')  # Replace with the appropriate redirect URL
+
+    return render(request, 'error.html')  # Replace with error handling template if needed

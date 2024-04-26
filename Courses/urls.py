@@ -20,6 +20,8 @@ urlpatterns = [
     path('rate_answers/', rate_answers, name='rate_answers'),
     path('student_ranking/', student_ranking, name='student_ranking'),
     path('profile/', user_profile, name='profile'),
+    path('evaluate_course/<int:lesson_id>/', evaluate_student_answers, name='evaluate_course'),
+    path('evaluate_answers/<int:answer_id>/', evaluate_answer, name='evaluate_answer'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

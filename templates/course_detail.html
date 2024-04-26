@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block content %}
     <div class="container">
         <h1>{{ course.name }}</h1>
@@ -7,7 +8,15 @@
         <ul class="list-group">
             {% for lesson in lessons %}
                 <li class="list-group-item">
-                    <a href="{% url 'lesson_detail' lesson.id %}">{{ lesson.title }}</a>
+                    {% if user.user_type == 'teacher' %}
+                        <a href="{% url 'evaluate_course' lesson.id %}">
+                            {{ lesson.title }}
+                        </a>
+                    {% else %}
+                        <a href="{% url 'lesson_detail' lesson.id %}">
+                            {{ lesson.title }}
+                        </a>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>
