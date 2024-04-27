@@ -63,5 +63,4 @@ class StudentAnswer(models.Model):
 
 class StudentRating(models.Model):
     student = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name='rating',null=True, blank=True)
-    score = models.IntegerField()
-    position = models.PositiveIntegerField()
+    score = models.IntegerField(null=True, blank=True)

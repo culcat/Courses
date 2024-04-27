@@ -136,16 +136,54 @@ def evaluate_student_answers(request, lesson_id):
     return render(request, 'evaluate_answers.html', context)
 
 
+
 def evaluate_answer(request, answer_id):
-
-
     answer = get_object_or_404(StudentAnswer, pk=answer_id)
 
     if request.method == 'POST':
         score = request.POST.get('score')
-        # Implement logic to validate and save the score to the answer object
-        # (e.g., answer.score = score; answer.save())
 
-        return redirect('evaluate_course')  # Replace with the appropriate redirect URL
+        # Validate score
+        try:
+            score = int(score)
+            if score < 0 or score > answer.lesson.course.max_score:
+                raise ValueError("Score must be between 0 and the maximum course score.")
+        except ValueError:
+            context = {'error_message': "Invalid score. Please enter a number between 0 and the maximum course score."}
+            return render(request, 'error.html', context)
 
-    return render(request, 'error.html')  # Replace with error handling template if needed
+        # Update answer score
+        answer.score = score
+        answer.save()  # Save the updated answer score
+
+        # Calculate and update StudentRating score
+        student = answer.student
+        student_rating, created = StudentRating.objects.get_or_create(student=student)
+
+        # Update score if the StudentRating object exists
+        if not created:
+            student_rating.score = calculate_overall_score(student)
+            student_rating.save()
+
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+    return render(request, 'error.html')
+
+
+
+def calculate_overall_score(student):
+    total_score = 0
+    num_answers = 0
+    student_answers = StudentAnswer.objects.filter(student=student)
+
+    # Calculate total score from graded answers
+    for answer in student_answers:
+        if answer.score is not None:  # Only consider graded answers
+            total_score += answer.score
+            num_answers += 1
+
+    # Calculate average score if there are graded answers
+    if num_answers > 0:
+        return total_score / num_answers
+    else:
+        return 0  # Default score if no graded answers exist
