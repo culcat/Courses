@@ -14,8 +14,6 @@
                 {% if user.user_type == 'student' %}
                     <li class="list-group-item">Образовательная организация: {{ user.organization }}</li>
                     <li class="list-group-item">Тип пользователя: Ученик</li>
-
-                    </ul>
                 {% elif user.user_type == 'teacher' %}
                     <li class="list-group-item">Образовательная организация: {{ user.organization }}</li>
                     <li class="list-group-item">Тип пользователя: Преподаватель</li>
@@ -24,7 +22,6 @@
                         {% for course in user.courses_taught.all %}
                             <li class="list-group-item">
                                 <a href="{% url 'course_detail' course.id %}">{{ course.name }}</a>
-
                             </li>
                         {% endfor %}
                     </ul>

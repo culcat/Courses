@@ -9,12 +9,10 @@
                     <form method="post">
                         {% csrf_token %}
                         <div class="mb-3">
-                            {{ form.username.label_tag }}
-                            {{ form.username }}
+                            <input type="text" name="username" class="form-control" placeholder="Имя пользователя">
                         </div>
                         <div class="mb-3">
-                            {{ form.password.label_tag }}
-                            {{ form.password }}
+                            <input type="password" name="password" class="form-control" placeholder="Пароль">
                         </div>
                         <button type="submit" class="btn btn-primary">Войти</button>
                     </form>

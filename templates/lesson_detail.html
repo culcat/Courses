@@ -2,32 +2,36 @@
 
 {% block content %}
 <div class="container">
-    <h1>{{ lesson.course.name }} - {{ lesson.title }}</h1>
-
-    {% if lesson.video %}
-    <div class="embed-responsive embed-responsive-16by9">
-        <video class="embed-responsive-item" controls>
+  <div class="row align-items-center">
+    <div class="col-md-8">
+      <h1>{{ lesson.course.name }} - {{ lesson.title }}</h1>
+      <p>{{ lesson.material }}</p>
+    </div>
+    <div class="col-md-4">
+      {% if lesson.video %}
+        <div class="embed-responsive embed-responsive-16by9">
+          <video class="embed-responsive-item" controls>
             <source src="{{ lesson.video.url }}" type="video/mp4">
             Your browser does not support the video tag.
-        </video>
-    </div>
-    {% endif %}
-
-    <p>{{ lesson.material }}</p>
-
-    {% if request.user.is_authenticated %}
-    {% if not student_answer %}
-    <form method="post" action="{% url 'submit_answer' lesson_id=lesson.id %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="answer_file">Ваш ответ:</label>
-            <input type="file" class="form-control-file" id="answer_file" name="answer_file" required>
+          </video>
         </div>
-        <button type="submit" class="btn btn-primary">Отправить</button>
-    </form>
-    {% else %}
+      {% endif %}
 
-    {% endif %}
-    {% endif %}
+      {% if request.user.is_authenticated %}
+        {% if not student_answer %}
+          <form method="post" action="{% url 'submit_answer' lesson_id=lesson.id %}" enctype="multipart/form-data" class="row g-3">
+            {% csrf_token %}
+            <div class="col-md-12">
+              <label for="answer_file" class="form-label">Ваш ответ:</label>
+              <input type="file" class="form-control" id="answer_file" name="answer_file" required>
+            </div>
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-primary">Отправить</button>
+            </div>
+          </form>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
 </div>
 {% endblock %}
