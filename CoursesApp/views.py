@@ -12,7 +12,7 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')  # Замените 'home' на URL вашей главной страницы
+            return redirect('home')
     else:
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
@@ -26,7 +26,7 @@ def login_user(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')  # Замените 'home' на URL вашей главной страницы
+                return redirect('home')
             else:
                 form.add_error(None, "Invalid username or password")
     else:
@@ -53,23 +53,31 @@ def course_detail(request, course_id):
 @login_required
 def my_courses(request):
     user = request.user
+
     if user.user_type == 'student':
-        # Check if the student is already enrolled in a course
+        # Check if student is enrolled in any courses
         enrolled_courses = Course.objects.filter(students=user)
         if enrolled_courses.exists():
-            # If the student is already enrolled, display their enrolled courses
+            # Display enrolled courses
             return render(request, 'my_courses.html', {'courses': enrolled_courses})
         else:
             if request.method == 'POST':
                 course_id = request.POST.get('course_id')
                 course = get_object_or_404(Course, pk=course_id)
-                course.students.add(user)  # Enroll the student in the course
+                course.students.add(user)  # Enroll student in the course
                 return redirect('my_courses')
             else:
-                # If the student is not enrolled, provide the option to choose a course
+                # Display available courses for enrollment
                 available_courses = Course.objects.exclude(students=user)
                 return render(request, 'choose_course.html', {'courses': available_courses})
+
+    elif user.user_type == 'teacher':
+        # Get courses taught by this teacher (assuming a 'teachers' field in Course)
+        taught_courses = Course.objects.filter(teacher=user)
+        return render(request, 'my_courses.html', {'courses': taught_courses})
+
     else:
+        # Handle invalid user types (optional, could raise an exception)
         return redirect('home')
 
 
