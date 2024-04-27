@@ -23,6 +23,7 @@ urlpatterns = [
     path('evaluate_course/<int:lesson_id>/', evaluate_student_answers, name='evaluate_course'),
     path('evaluate_answers/<int:answer_id>/', evaluate_answer, name='evaluate_answer'),
     path('create_course/', create_course, name='create_course'),
+    path('create_lesson/<int:course_id>/', create_lesson, name='create_lesson'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

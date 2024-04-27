@@ -136,7 +136,18 @@ def user_profile(request):
         'user': request.user,
     }
     return render(request, 'user_profile.html', context)
-
+def create_lesson(request, course_id):
+    course = Course.objects.get(pk=course_id)
+    if request.method == 'POST':
+        form = lessonForm(request.POST, request.FILES)
+        if form.is_valid():
+            lesson = form.save(commit=False)
+            lesson.course = course
+            lesson.save()
+            return redirect('course_detail', course_id=course_id)
+    else:
+        form = lessonForm()
+    return render(request, 'create_lesson.html', {'form': form, 'course': course})
 def evaluate_student_answers(request, lesson_id):
 
 

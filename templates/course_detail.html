@@ -19,6 +19,13 @@
                     {% endif %}
                 </li>
             {% endfor %}
+        {% if user.user_type == 'teacher' %}
+                <li class="list-group-item">
+                    <a href="{% url 'create_lesson' course.id %}">
+                        Создать новый урок
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 {% endblock %}

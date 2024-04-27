@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, EducationalOrganization, Course
+from .models import CustomUser, EducationalOrganization, Course, Lesson
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -47,3 +47,13 @@ class CreateCourseForm(forms.ModelForm):
         # Получаем организацию текущего пользователя и устанавливаем её по умолчанию для поля organization
         if user.organization:
             self.fields['organization'].initial = user.organization
+
+class lessonForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        fields = ['title', 'material', 'video']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название урока'}),
+            'material': forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Материал'}),
+            'video': forms.FileInput(attrs={'class': 'form-control', 'placeholder': 'Видео'}),
+        }
