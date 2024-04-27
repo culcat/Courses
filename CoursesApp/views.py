@@ -79,8 +79,16 @@ def my_courses(request):
     else:
         # Handle invalid user types (optional, could raise an exception)
         return redirect('home')
-
-
+def create_course(request):
+    if request.method == 'POST':
+        form = CreateCourseForm(request.user, request.POST)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.save()
+            return redirect('my_courses')
+    else:
+        form = CreateCourseForm(request.user)
+    return render(request, 'create_course.html', {'form': form})
 @login_required
 def lesson_detail(request, lesson_id):
     lesson = Lesson.objects.get(id=lesson_id)

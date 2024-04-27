@@ -19,6 +19,9 @@
             </div>
         </div>
         {% endfor %}
+     {% if user.user_type == 'teacher' %}
+        <a href="{% url 'create_course' %}" class="btn btn-primary">Создать курс</a>
+    {% endif %}
     </div>
 </div>
 {% endblock %}
