@@ -1,31 +1,35 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container">
-        <h1>{{ course.name }}</h1>
-        <p>{{ course.description }}</p>
-        <h2>Уроки</h2>
-        <ul class="list-group">
-            {% for lesson in lessons %}
-                <li class="list-group-item">
-                    {% if user.user_type == 'teacher' %}
-                        <a href="{% url 'evaluate_course' lesson.id %}">
-                            {{ lesson.title }}
-                        </a>
-                    {% else %}
-                        <a href="{% url 'lesson_detail' lesson.id %}">
-                            {{ lesson.title }}
-                        </a>
-                    {% endif %}
-                </li>
-            {% endfor %}
+<div class="container">
+  <h1>{{ course.name }}</h1>
+  <p>{{ course.description }}</p>
+
+  <h2>Уроки</h2>
+  <ul class="list-group">
+    {% for lesson in lessons %}
+      <li class="list-group-item">
         {% if user.user_type == 'teacher' %}
-                <li class="list-group-item">
-                    <a href="{% url 'create_lesson' course.id %}">
-                        Создать новый урок
-                    </a>
-                </li>
-            {% endif %}
-        </ul>
-    </div>
+          <a href="{% url 'evaluate_course' lesson.id %}"> {{ lesson.title }} </a>
+        {% else %}
+          <a href="{% url 'lesson_detail' lesson.id %}"> {{ lesson.title }} </a>
+        {% endif %}
+      </li>
+    {% endfor %}
+
+    {% if user.user_type == 'teacher' %}
+      <li class="list-group-item">
+        <a href="{% url 'create_lesson' course.id %}"> Создать новый урок </a>
+      </li>
+    {% endif %}
+  </ul>
+
+{% if user.is_authenticated and is_student %}
+    <form action="{% url 'complete_course' course.id %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">Завершить курс</button>
+    </form>
+{% endif %}
+
+</div>
 {% endblock %}

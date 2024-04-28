@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Course, Lesson, StudentAnswer, StudentRating
 from .forms import *
+from django.contrib import messages
 from django.db import models
 def register(request):
     if request.method == 'POST':
@@ -48,8 +49,18 @@ def course_list(request):
 def course_detail(request, course_id):
     course = Course.objects.get(id=course_id)
     lessons = Lesson.objects.filter(course=course)
-    return render(request, 'course_detail.html', {'course': course, 'lessons': lessons})
+    is_student = course.students.filter(pk=request.user.pk).exists()
+    return render(request, 'course_detail.html', {'course': course, 'lessons': lessons,"is_student":is_student})
+def complete_course(request, course_id):
+    course = Course.objects.get(pk=course_id)
 
+    if request.user.is_authenticated and course.students.filter(pk=request.user.pk).exists():
+        course.students.remove(request.user)
+        messages.success(request, "Вы успешно завершили курс!")
+        return redirect('course_detail', course_id=course.id)
+    else:
+        messages.error(request, "Вы не можете завершить этот курс.")
+        return redirect('courses_list')
 @login_required
 def my_courses(request):
     user = request.user
@@ -89,7 +100,6 @@ def create_course(request):
     else:
         form = CreateCourseForm(request.user)
     return render(request, 'create_course.html', {'form': form})
-@login_required
 def lesson_detail(request, lesson_id):
     lesson = Lesson.objects.get(id=lesson_id)
     return render(request, 'lesson_detail.html', {'lesson': lesson})
