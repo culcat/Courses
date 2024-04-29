@@ -179,48 +179,12 @@ def evaluate_answer(request, answer_id):
 
     if request.method == 'POST':
         score = request.POST.get('score')
-
-        # Validate score
-        try:
-            score = int(score)
-            if score < 0 or score > answer.lesson.course.max_score:
-                raise ValueError("Score must be between 0 and the maximum course score.")
-        except ValueError:
-            context = {'error_message': "Invalid score. Please enter a number between 0 and the maximum course score."}
-            return render(request, 'error.html', context)
-
-        # Update answer score
         answer.score = score
-        answer.save()  # Save the updated answer score
-
-        # Calculate and update StudentRating score
+        answer.save()
         student = answer.student
-        student_rating, created = StudentRating.objects.get_or_create(student=student)
-
-        # Update score if the StudentRating object exists
-        if not created:
-            student_rating.score = calculate_overall_score(student)
-            student_rating.save()
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
     return render(request, 'error.html')
 
 
-
-def calculate_overall_score(student):
-    total_score = 0
-    num_answers = 0
-    student_answers = StudentAnswer.objects.filter(student=student)
-
-    # Calculate total score from graded answers
-    for answer in student_answers:
-        if answer.score is not None:  # Only consider graded answers
-            total_score += answer.score
-            num_answers += 1
-
-    # Calculate average score if there are graded answers
-    if num_answers > 0:
-        return total_score / num_answers
-    else:
-        return 0  # Default score if no graded answers exist

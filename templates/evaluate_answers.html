@@ -19,8 +19,12 @@
             </thead>
             <tbody>
          {% for answer in student_answers %}
+             {% if not answer.score %}
+
+
     <tr>
         <td>{{ answer.student.username }}</td>
+
         <td>
             <a href="{{ answer.answer_file.url }}" class="btn btn-primary btn-sm">Скачать ответ</a>
         </td>
@@ -34,6 +38,7 @@
             </form>
         </td>
     </tr>
+               {% endif %}
 {% endfor %}
             </tbody>
         </table>
