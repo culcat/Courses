@@ -7,7 +7,7 @@ class CustomUserCreationForm(UserCreationForm):
     organization = forms.ModelChoiceField(queryset=EducationalOrganization.objects.all(), required=False)
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'password1', 'password2', 'user_type', 'organization')
+        fields = ('username', 'first_name', 'last_name','email', 'password1', 'password2', 'user_type', 'organization')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -24,9 +24,6 @@ class RatingForm(forms.Form):
     position = forms.IntegerField(min_value=1)
 
 
-from django import forms
-from .models import Course
-from .models import CustomUser
 
 class CreateCourseForm(forms.ModelForm):
     class Meta:
