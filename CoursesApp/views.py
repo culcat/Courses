@@ -147,6 +147,7 @@ def user_profile(request):
     }
     return render(request, 'user_profile.html', context)
 def create_lesson(request, course_id):
+
     course = Course.objects.get(pk=course_id)
     if request.method == 'POST':
         form = lessonForm(request.POST, request.FILES)
@@ -159,13 +160,14 @@ def create_lesson(request, course_id):
         form = lessonForm()
     return render(request, 'create_lesson.html', {'form': form, 'course': course})
 def evaluate_student_answers(request, lesson_id):
-
+    lesson = Lesson.objects.get(id=lesson_id)
 
 
     student_answers = StudentAnswer.objects.filter(lesson = lesson_id)
 
 
     context = {
+        'lesson':lesson,
         'student_answers': student_answers,
         'lesson_id': lesson_id,  # Pass lesson ID for potential filtering in the template
     }
@@ -176,11 +178,14 @@ def evaluate_student_answers(request, lesson_id):
 
 def evaluate_answer(request, answer_id):
     answer = get_object_or_404(StudentAnswer, pk=answer_id)
+    raiting = get_object_or_404(StudentRating, student=answer.student)
 
     if request.method == 'POST':
         score = request.POST.get('score')
         answer.score = score
         answer.save()
+        raiting.score = int(score) + int(raiting.score)
+        raiting.save()
         student = answer.student
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
