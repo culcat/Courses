@@ -14,7 +14,13 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+ALLOWED_HOSTS = [
+    'localhost',
+    '56afd106-40be-43f3-a227-62c2c9df5a47-00-2s9pls5xlkbuu.pike.replit.dev'
+]
+CSRF_TRUSTED_ORIGINS = [
+    'https://56afd106-40be-43f3-a227-62c2c9df5a47-00-2s9pls5xlkbuu.pike.replit.dev'
+]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -24,7 +30,6 @@ SECRET_KEY = 'django-insecure-eg8v+g9m$#w*tfi6i4wnhas^jax(z$!uot8bqc8$uk9bvq(r6m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'CoursesApp.CustomUser'
 # Application definition
