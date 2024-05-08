@@ -140,12 +140,10 @@ def student_ranking(request):
     top_students = StudentRating.objects.order_by('-score')[:50]
     return render(request, 'student_ranking.html', {'top_students': top_students})
 def user_profile(request):
-    studentRating = StudentRating.objects.get(student=request.user)
     if not request.user.is_authenticated:
         return redirect('login')
 
     context = {
-        'rating': studentRating.score,
         'user': request.user,
     }
     return render(request, 'user_profile.html', context)
@@ -178,21 +176,24 @@ def evaluate_student_answers(request, lesson_id):
     return render(request, 'evaluate_answers.html', context)
 
 
-
 def evaluate_answer(request, answer_id):
     answer = get_object_or_404(StudentAnswer, pk=answer_id)
-    raiting = get_object_or_404(StudentRating, student=answer.student)
+    rating, created = StudentRating.objects.get_or_create(student=answer.student)
 
     if request.method == 'POST':
         score = request.POST.get('score')
         answer.score = score
         answer.save()
-        raiting.score = int(score) + int(raiting.score)
-        raiting.save()
+
+        # Handle the case where rating.score is None
+        if rating.score is None:
+            rating.score = 0
+
+        rating.score = int(score) + rating.score
+        rating.save()
+
         student = answer.student
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
     return render(request, 'error.html')
-
-

@@ -2,36 +2,40 @@
 
 {% block content %}
 <div class="container">
-  <div class="row">
+  <div class="row justify-content-center">
     <div class="col-md-8">
-      <h1>{{ lesson.course.name }} - {{ lesson.title }}</h1>
-      <p>{{ lesson.material }}</p>
-      {% if lesson.video %}
-      <div class="embed-responsive embed-responsive-16by9 mb-4">
-        <video class="embed-responsive-item" controls>
-          <source src="{{ lesson.video.url }}" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-      </div>
-      {% endif %}
-      {% if request.user.is_authenticated %}
-        {% if not student_answer and request.user in lesson.course.students.all %}
-          <form method="post" action="{% url 'submit_answer' lesson_id=lesson.id %}" enctype="multipart/form-data" class="row g-3">
-            {% csrf_token %}
-            <div class="col-md-8">
-              <label for="answer_file" class="form-label">Ваш ответ:</label>
-              <input type="file" class="form-control" id="answer_file" name="answer_file" required>
-            </div>
-            <div class="col-md-4 align-self-end">
-              <button type="submit" class="btn btn-primary">Отправить</button>
-            </div>
-          </form>
-        {% else %}
-          <div class="alert alert-danger" role="alert">
-            <p>Вы не проходите этот курс и не можете загрузить ответы.</p>
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <h1 class="card-title text-center mb-4">{{ lesson.course.name }} - {{ lesson.title }}</h1>
+          <p class="card-text">{{ lesson.material }}</p>
+          {% if lesson.video %}
+          <div class="embed-responsive embed-responsive-16by9 mb-4">
+            <video class="embed-responsive-item" controls>
+              <source src="{{ lesson.video.url }}" type="video/mp4">
+              Ваш браузер не поддерживает видео.
+            </video>
           </div>
-        {% endif %}
-      {% endif %}
+          {% endif %}
+          {% if request.user.is_authenticated %}
+            {% if not student_answer and request.user in lesson.course.students.all %}
+              <form method="post" action="{% url 'submit_answer' lesson_id=lesson.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label for="answer_file" class="form-label">Ваш ответ:</label>
+                  <input type="file" class="form-control" id="answer_file" name="answer_file" required>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+              </form>
+            {% else %}
+              <div class="alert alert-danger text-center" role="alert">
+                <p class="mb-0">Вы не проходите этот курс и не можете загрузить ответы.</p>
+              </div>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,28 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-<body>
-    <div class="container">
-        <h1 class="mt-5 mb-4">Рейтинг студентов</h1>
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Место</th>
-                        <th>Имя пользователя</th>
-                        <th>Количество баллов</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for student in top_students %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td>{{ student.student.username }}</td>
-                        <td>{{ student.score }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+<div class="container">
+    <h1 class="mt-5 mb-4">Рейтинг студентов</h1>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Имя пользователя</th>
+                    <th scope="col">Количество баллов</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in top_students %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ student.student.username }}</td>
+                    <td>{{ student.score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-</body>
+</div>
 {% endblock %}

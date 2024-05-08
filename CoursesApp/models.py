@@ -57,7 +57,7 @@ class StudentAnswer(models.Model):
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='answers')
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='answers')
     answer_file = models.FileField(upload_to='answers/')
-    score = models.IntegerField(null=True, blank=True)
+    score = models.IntegerField(default=0,null=False,blank=False)
 
 
 

@@ -2,35 +2,53 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="mt-4 mb-4">Личный кабинет</h1>
-
-    <div class="card">
-        <div class="card-body">
-            <p class="card-text">Привет, {{ user.username }}!</p>
-
-            <ul class="list-group mb-3">
-                <li class="list-group-item">Имя: {{ user.first_name }} {{ user.last_name }}</li>
-                <li class="list-group-item">Email: {{ user.email }}</li>
-                {% if user.user_type == 'student' %}
-                    <li class="list-group-item">Образовательная организация: {{ user.organization }}</li>
-                    <li class="list-group-item">Тип пользователя: Ученик</li>
-                    <li class="list-group-item">Рейтинг: {{ rating }}</li>
-                {% elif user.user_type == 'teacher' %}
-                    <li class="list-group-item">Образовательная организация: {{ user.organization }}</li>
-                    <li class="list-group-item">Тип пользователя: Преподаватель</li>
-                    <li class="list-group-item">Мои курсы:</li>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card mt-5 shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h1 class="mb-0">Личный кабинет</h1>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Привет, <strong>{{ user.username }}</strong>!</p>
                     <ul class="list-group">
-                        {% for course in user.courses_taught.all %}
+                        <li class="list-group-item">
+                            <strong>Имя:</strong> {{ user.first_name }} {{ user.last_name }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Email:</strong> {{ user.email }}
+                        </li>
+                        {% if user.user_type == 'student' %}
                             <li class="list-group-item">
-                                <a href="{% url 'course_detail' course.id %}">{{ course.name }}</a>
+                                <strong>Образовательная организация:</strong> {{ user.organization }}
                             </li>
-                        {% endfor %}
+                            <li class="list-group-item">
+                                <strong>Тип пользователя:</strong> Ученик
+                            </li>
+                        {% elif user.user_type == 'teacher' %}
+                            <li class="list-group-item">
+                                <strong>Образовательная организация:</strong> {{ user.organization }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Тип пользователя:</strong> Преподаватель
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Мои курсы:</strong>
+                                <ul class="list-group">
+                                    {% for course in user.courses_taught.all %}
+                                        <li class="list-group-item">
+                                            <a href="{% url 'course_detail' course.id %}" class="text-decoration-none">{{ course.name }}</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item">
+                                <strong>Тип пользователя:</strong> Админ
+                            </li>
+                        {% endif %}
                     </ul>
-                {% else %}
-                    <li class="list-group-item">Тип пользователя: Админ</li>
-                {% endif %}
-            </ul>
-
+                </div>
+            </div>
         </div>
     </div>
 </div>
