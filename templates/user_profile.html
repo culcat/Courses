@@ -14,6 +14,7 @@
                 {% if user.user_type == 'student' %}
                     <li class="list-group-item">Образовательная организация: {{ user.organization }}</li>
                     <li class="list-group-item">Тип пользователя: Ученик</li>
+                    <li class="list-group-item">Рейтинг: {{ rating }}</li>
                 {% elif user.user_type == 'teacher' %}
                     <li class="list-group-item">Образовательная организация: {{ user.organization }}</li>
                     <li class="list-group-item">Тип пользователя: Преподаватель</li>

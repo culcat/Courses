@@ -16,7 +16,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 ALLOWED_HOSTS = [
     'localhost',
-    '3e453bde-f0a0-42e7-8cc5-c5578296b379-00-ldptb2oq7lsb.sisko.replit.dev'
+    '3e453bde-f0a0-42e7-8cc5-c5578296b379-00-ldptb2oq7lsb.sisko.replit.dev',
+    '127.0.0.1'
 ]
 CSRF_TRUSTED_ORIGINS = [
     'https://3e453bde-f0a0-42e7-8cc5-c5578296b379-00-ldptb2oq7lsb.sisko.replit.dev'

@@ -136,13 +136,12 @@ def student_ranking(request):
     top_students = StudentRating.objects.order_by('-score')[:50]
     return render(request, 'student_ranking.html', {'top_students': top_students})
 def user_profile(request):
-    """
-    Личный кабинет пользователя.
-    """
+    studentRating = StudentRating.objects.get(student=request.user)
     if not request.user.is_authenticated:
         return redirect('login')
 
     context = {
+        'rating': studentRating.score,
         'user': request.user,
     }
     return render(request, 'user_profile.html', context)
