@@ -1,23 +1,22 @@
 {% extends 'base.html' %}
+
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="card mt-5">
-                    <div class="card-header">
-                        <h1 class="card-title text-center">Список курсов</h1>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            {% for course in courses %}
-                                <li class="list-group-item">
-                                    <a href="{% url 'course_detail' course.id %}" class="text-decoration-none">{{ course.name }}</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h1 class="card-title text-center mb-0">Список курсов</h1>
+                </div>
+                <div class="card-body">
+                    <div class="list-group">
+                        {% for course in courses %}
+                        <a href="{% url 'course_detail' course.id %}" class="list-group-item list-group-item-action">{{ course.name }}</a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock %}
