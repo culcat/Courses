@@ -6,6 +6,18 @@
             <div class="card mt-5">
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">Регистрация</h2>
+                {% if form.errors %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
                     <form method="post">
                         {% csrf_token %}
                         <div class="mb-3">

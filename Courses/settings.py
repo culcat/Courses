@@ -20,7 +20,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1'
 ]
 CSRF_TRUSTED_ORIGINS = [
-    'https://3e453bde-f0a0-42e7-8cc5-c5578296b379-00-ldptb2oq7lsb.sisko.replit.dev'
+    'https://3e453bde-f0a0-42e7-8cc5-c5578296b379-00-ldptb2oq7lsb.sisko.replit.dev',
+    'http://127.0.0.1'
 ]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/

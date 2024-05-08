@@ -18,6 +18,7 @@ def register(request):
         form = CustomUserCreationForm()
     return render(request, 'register.html', {'form': form})
 
+
 def login_user(request):
     if request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
@@ -32,7 +33,10 @@ def login_user(request):
                 form.add_error(None, "Invalid username or password")
     else:
         form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html', {'form': form, 'errors': form.non_field_errors()})
+
+
+
 
 def logout_user(request):
     logout(request)
