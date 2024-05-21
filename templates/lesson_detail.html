@@ -10,7 +10,7 @@
           <p class="card-text">{{ lesson.material }}</p>
           {% if lesson.video %}
           <div class="embed-responsive embed-responsive-16by9 mb-4">
-            <video class="embed-responsive-item" controls>
+            <video width="500px"  class="embed-responsive-item" controls>
               <source src="{{ lesson.video.url }}" type="video/mp4">
               Ваш браузер не поддерживает видео.
             </video>
