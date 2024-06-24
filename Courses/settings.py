@@ -17,11 +17,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ALLOWED_HOSTS = [
     'localhost',
     '3e453bde-f0a0-42e7-8cc5-c5578296b379-00-ldptb2oq7lsb.sisko.replit.dev',
-    '127.0.0.1'
+    '127.0.0.1',
+    'culcat-courses-c75e.twc1.net'
 ]
 CSRF_TRUSTED_ORIGINS = [
     'https://3e453bde-f0a0-42e7-8cc5-c5578296b379-00-ldptb2oq7lsb.sisko.replit.dev',
-    'http://127.0.0.1'
+    'http://127.0.0.1',
+    'https://culcat-courses-c75e.twc1.net/'
 ]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -115,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
